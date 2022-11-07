@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "cat_recipe".
@@ -54,5 +55,13 @@ class CatRecipe extends \yii\db\ActiveRecord
     public function getRecipes()
     {
         return $this->hasMany(Recipe::class, ['cat_recipe_id' => 'id']);
+    }
+
+    public static function getCategoryList()
+    {
+        $arrays = self::find()->select(['id', 'title'])->orderBy('id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+            return $row['id'] . ' - ' . $row['title'];
+        });
     }
 }

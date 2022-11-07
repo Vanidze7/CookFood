@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\components\BaseController;
 use common\models\CatProduct;
+use common\models\Product;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
@@ -48,8 +49,11 @@ class CatProductController extends BaseController
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider(['query' => Product::find()->where(['cat_product_id' => $id])]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

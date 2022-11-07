@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "step_recipe".
@@ -70,4 +71,12 @@ class StepRecipe extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Recipe::class, ['id' => 'recipe_id']);
     }
+    public static function getStepList()
+    {
+        $arrays = self::find()->select(['id', 'recipe_id'])->orderBy('recipe_id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+            return $row['recipe_id'] . ' - (' . $row->recipe->title . ')';
+        });
+    }
+
 }

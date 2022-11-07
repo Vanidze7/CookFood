@@ -61,8 +61,12 @@ class PictureReviewController extends BaseController
         $model = new PictureReview();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    \Yii::error($model->getErrors());
+                }
             }
         } else {
             $model->loadDefaultValues();

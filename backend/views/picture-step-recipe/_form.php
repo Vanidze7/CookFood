@@ -1,5 +1,6 @@
 <?php
 
+use common\models\StepRecipe;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -14,10 +15,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'path')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'step_id')->textInput() ?>
+    <?= $form->field($model, 'step_id')->dropDownList(StepRecipe::getStepList()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

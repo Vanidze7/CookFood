@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\CatProduct $model */
 
-$this->title = 'Create Cat Product';
-$this->params['breadcrumbs'][] = ['label' => 'Cat Products', 'url' => ['index']];
+$this->title = 'Создание категории продуктов';
+$this->params['breadcrumbs'][] = ['label' => 'Категории продуктов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cat-product-create">

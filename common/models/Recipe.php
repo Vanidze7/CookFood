@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "recipe".
@@ -34,6 +35,21 @@ use yii\behaviors\TimestampBehavior;
 class Recipe extends \yii\db\ActiveRecord
 {
     public $file;
+
+    const STATUS_0 = 0;    const STATUS_1 = 1;    const STATUS_2 = 2;
+    const LEVEL_0 = 0;    const LEVEL_1 = 1;    const LEVEL_2 = 2;
+
+    public static array $levelLabels = [
+        self::LEVEL_0 => 'Легкий',
+        self::LEVEL_1 => 'Средний',
+        self::LEVEL_2 => 'Сложный',
+    ];
+
+    public static array $statusLabels = [
+        self::STATUS_0 => 'Удален пользователем',
+        self::STATUS_1 => 'Активен',
+        self::STATUS_2 => 'Черновик',
+    ];
 
     /**
      * {@inheritdoc}
@@ -75,8 +91,8 @@ class Recipe extends \yii\db\ActiveRecord
             'content' => 'Содержание',
             'img' => 'Местоположение',
             'file' => 'Картинка',
-            'count_portions' => 'Кол-во порций',
-            'time_cook' => 'Время готовки',
+            'count_portions' => 'Кол-во порций (шт.)',
+            'time_cook' => 'Время готовки (мин.)',
             'views' => 'Просмотры',
             'level' => 'Сложность',
             'rating' => 'Рейтинг',
@@ -157,4 +173,13 @@ class Recipe extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    public static function getRecipeList()
+    {
+        $arrays = self::find()->select(['id', 'title'])->orderBy('id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+           return $row['id'] . ' - ' . $row['title'];
+        });
+    }
+
 }

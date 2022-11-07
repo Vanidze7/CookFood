@@ -47,7 +47,7 @@ class ProductRecipe extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'product_id' => 'Название',
+            'product_id' => 'Продукт',
             'note' => 'Примечание',
             'count' => 'Кол-во',
             'recipe_id' => 'Рецепт',

@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Review Recipes';
+$this->title = 'Отзывы рецептов';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="review-recipe-index">
@@ -17,27 +17,40 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Review Recipe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать отзыв рецепта', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title',
-            'content:ntext',
-            'like',
-            'dislike',
-            //'views',
-            //'created_at',
-            //'updated_at',
-            //'user_id',
-            //'recipe_id',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'content',
+                'value' => function(ReviewRecipe $model){
+                    return substr($model->content, 0, 100);
+                },
+                'format' => 'raw'
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
+            [
+                'attribute' => 'user_id',
+                'value' => function(ReviewRecipe $model){
+                    return $model->user->id . ' - ' . $model->user->username;
+                },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'recipe_id',
+                'value' => function(ReviewRecipe $model){
+                    return '<a href="' . Url::to(['recipe/view', 'id' => $model->recipe->id]) . '">' . $model->recipe->id . ' - ' . $model->recipe->title . '</a>';
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, ReviewRecipe $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

@@ -3,8 +3,12 @@
 namespace backend\controllers;
 
 use backend\components\BaseController;
+use common\models\PictureStepRecipe;
+use common\models\ProductRecipe;
 use common\models\Recipe;
+use common\models\StepRecipe;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 /**
  * RecipeController implements the CRUD actions for Recipe model.
@@ -45,8 +49,17 @@ class RecipeController extends BaseController
      */
     public function actionView($id)
     {
+        $productDataProvider = new ActiveDataProvider(['query' => ProductRecipe::find()->where(['recipe_id' => $id])]);
+        $stepDataProvider = new ActiveDataProvider(['query' => StepRecipe::find()->where(['recipe_id' => $id])]);
+        $array_step = StepRecipe::find()->where(['recipe_id' => $id])->all();
+
+        $pictureStepDataProvider = new ActiveDataProvider(['query' => PictureStepRecipe::find()->where(['step_id' => ArrayHelper::map($array_step, 'id', 'id')])]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'productDataProvider' => $productDataProvider,
+            'stepDataProvider' => $stepDataProvider,
+            'pictureStepDataProvider' => $pictureStepDataProvider,
         ]);
     }
 

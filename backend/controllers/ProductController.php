@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\components\BaseController;
 use common\models\Product;
+use common\models\ProductRecipe;
+use common\models\Recipe;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
@@ -46,8 +48,15 @@ class ProductController extends BaseController
      */
     public function actionView($id)
     {
+        //alias назначает псевдоним модели (r и pr)
+        $recipe_product = Recipe::find()->select(['r.*'])->alias('r')->leftJoin(['pr' => ProductRecipe::tableName()], 'pr.recipe_id = r.id')
+            ->where(['pr.product_id'=> $id]);
+
+        $recipeDataProvider = new ActiveDataProvider(['query' => $recipe_product]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'recipeDataProvider' => $recipeDataProvider,
         ]);
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Recipe;
+use common\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -9,7 +10,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Recipes';
+$this->title = 'Рецепты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recipe-index">
@@ -17,30 +18,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Recipe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать рецепт', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title',
-            'content:ntext',
-            'count_portions',
-            'time_cook:datetime',
-            //'views',
-            //'level',
-            //'rating',
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'cat_recipe_id',
-            //'user_id',
+            'content:raw',
+            'views',
+            'created_at:datetime',
+            'updated_at:datetime',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'cat_recipe_id',
+                'value' => function(Recipe $model){
+                    return '<a href="'. Url::to(['cat-recipe/view', 'id' => $model->catRecipe->id]) . '">' . $model->cat_recipe_id . ' - ' . $model->catRecipe->title . '</a>';
+                    },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => function(Recipe $model){
+                    return $model->user->id . ' - ' . $model->user->username;
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Recipe $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

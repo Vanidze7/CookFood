@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Comment Recipes';
+$this->title = 'Комментарии рецептов';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comment-recipe-index">
@@ -17,23 +17,33 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Comment Recipe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать комментарий рецепта', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'content:ntext',
-            'created_at',
-            'updated_at',
-            'user_id',
-            //'recipe_id',
+            'content:raw',
+            'created_at:datetime',
+            'updated_at:datetime',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'recipe_id',
+                'value' => function(CommentRecipe $model){
+                    return '<a href="' . Url::to(['recipe/view', 'id' => $model->recipe->id]) . '">' . $model->recipe->id . ' - ' . $model->recipe->title . '</a>';
+                },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => function(CommentRecipe $model){
+                    return $model->user->id . ' - ' . $model->user->username;
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, CommentRecipe $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

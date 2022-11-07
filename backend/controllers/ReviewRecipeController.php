@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\components\BaseController;
+use common\models\PictureReview;
 use common\models\ReviewRecipe;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -46,8 +47,11 @@ class ReviewRecipeController extends BaseController
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider(['query' => PictureReview::find()->where(['review_id' => $id])]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

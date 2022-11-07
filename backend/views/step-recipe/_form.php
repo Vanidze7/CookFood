@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Recipe;
+use kartik\editors\Summernote;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,14 +14,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'step_number')->textInput() ?>
+    <?= $form->field($model, 'step_number')->textInput() //отредактировать проставление номера шага автоматически ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'content')->widget(Summernote::class, [
+        'options' => ['placeholder' => 'Опишите шаг...']
+    ]) ?>
 
-    <?= $form->field($model, 'recipe_id')->textInput() ?>
+    <?= $form->field($model, 'recipe_id')->dropDownList(Recipe::getRecipeList()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

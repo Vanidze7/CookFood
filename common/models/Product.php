@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "product".
@@ -67,5 +68,12 @@ class Product extends \yii\db\ActiveRecord
     public function getProductRecipes()
     {
         return $this->hasMany(ProductRecipe::class, ['product_id' => 'id']);
+    }
+    public static function getProductList()
+    {
+        $arrays = self::find()->select(['id', 'title'])->orderBy('id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+            return $row['id'] . ' - ' . $row['title'];
+        });
     }
 }

@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Favourite $model */
 
-$this->title = 'Update Favourite: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Favourites', 'url' => ['index']];
+$this->title = 'Изменить избранное: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Избранные', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Изменить';
 ?>
 <div class="favourite-update">
 

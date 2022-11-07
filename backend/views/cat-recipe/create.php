@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\CatRecipe $model */
 
-$this->title = 'Create Cat Recipe';
-$this->params['breadcrumbs'][] = ['label' => 'Cat Recipes', 'url' => ['index']];
+$this->title = 'Создание кат. рецептов';
+$this->params['breadcrumbs'][] = ['label' => 'Кат. рецептов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cat-recipe-create">

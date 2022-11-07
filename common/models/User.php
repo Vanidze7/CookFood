@@ -6,6 +6,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -210,4 +211,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    public static function getUserList()
+    {
+        $arrays = self::find()->select(['id', 'username'])->orderBy('id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+           return $row['id'] . ' - ' . $row['username'];
+        });
+    }
+
 }

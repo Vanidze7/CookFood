@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\components\BaseController;
+use common\models\PictureStepRecipe;
 use common\models\StepRecipe;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -46,8 +47,12 @@ class StepRecipeController extends BaseController
      */
     public function actionView($id)
     {
+        $pictureDataProvider = new ActiveDataProvider(['query' => PictureStepRecipe::find()->where(['step_id' => $id])]);
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'pictureDataProvider' => $pictureDataProvider,
         ]);
     }
 

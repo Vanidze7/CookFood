@@ -1,5 +1,6 @@
 <?php
 
+use common\models\CatProduct;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -13,11 +14,10 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cat_product_id')->textInput() ?>
+    <?= $form->field($model, 'cat_product_id')->dropDownList(CatProduct::getCategoryList()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "review_recipe".
@@ -99,5 +100,13 @@ class ReviewRecipe extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function getReviewList()
+    {
+        $arrays = self::find()->select(['id', 'title'])->orderBy('id')->all();
+        return ArrayHelper::map($arrays, 'id', function ($row){
+            return $row['id'] . ' - ' . $row['title'];
+        });
     }
 }

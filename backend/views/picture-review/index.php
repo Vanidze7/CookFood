@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Picture Reviews';
+$this->title = 'Картинки отзывов';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="picture-review-index">
@@ -17,20 +17,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Picture Review', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать картинку отзыва', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'path',
-            'review_id',
+            'path_img',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'review_id',
+                'value' => function(PictureReview $model){
+                    return '<a href="' . Url::to(['review-recipe/view', 'id' => $model->review->id]) . '">' . $model->review->id . ' - ' . $model->review->title . '</a>';
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, PictureReview $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

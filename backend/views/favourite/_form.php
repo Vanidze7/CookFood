@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Recipe;
+use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,12 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'recipe_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')->dropDownList(User::getUserList()) ?>
+    <?= $form->field($model, 'recipe_id')->dropDownList(Recipe::getRecipeList()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

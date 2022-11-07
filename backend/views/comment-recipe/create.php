@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\CommentRecipe $model */
 
-$this->title = 'Create Comment Recipe';
-$this->params['breadcrumbs'][] = ['label' => 'Comment Recipes', 'url' => ['index']];
+$this->title = 'Создать комментарий рецепта';
+$this->params['breadcrumbs'][] = ['label' => 'Комментарии рецептов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comment-recipe-create">

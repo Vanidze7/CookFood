@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\ReviewRecipe $model */
 
-$this->title = 'Create Review Recipe';
-$this->params['breadcrumbs'][] = ['label' => 'Review Recipes', 'url' => ['index']];
+$this->title = 'Создание отзыва рецепта';
+$this->params['breadcrumbs'][] = ['label' => 'Отзывы рецептов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="review-recipe-create">

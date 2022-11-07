@@ -1,13 +1,17 @@
 <?php
 
+use common\models\Product;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\CatProduct $model */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Cat Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Категории продуктов', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить категорию продуктов?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -31,8 +35,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'content',
+            'content:raw',
         ],
     ]) ?>
+<div class="product-cat">
+
+    <h2><?= Html::encode('Продукты категории') ?></h2>
+
+</div>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            'id',
+            'title',
+            [
+                'class' => ActionColumn::class,
+                'urlCreator' => function ($action, Product $model, $key, $index, $column) {
+                    return Url::toRoute(['product/'.$action, 'id' => $model->id]);
+                }
+            ],
+        ],
+    ]); ?>
 
 </div>

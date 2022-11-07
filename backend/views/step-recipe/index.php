@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Step Recipes';
+$this->title = 'Шаги рецептов';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="step-recipe-index">
@@ -17,21 +17,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Step Recipe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать шаг рецепта', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'step_number',
-            'content:ntext',
-            'recipe_id',
+            'content:raw',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'recipe_id',
+                'value' => function (StepRecipe $model){
+                    return '<a href="' . Url::to(['recipe/view', 'id' => $model->recipe->id]) . '">' . $model->recipe->id . ' - ' . $model->recipe->title . '</a>';
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, StepRecipe $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

@@ -1,5 +1,8 @@
 <?php
 
+use common\models\Recipe;
+use common\models\User;
+use kartik\editors\Summernote;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,18 +15,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'content')->widget(Summernote::class, [
+            'options' =>
+                ['placeholder' => 'Напечатайте ваш комментарий...']
+    ]) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'recipe_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')->dropDownList(User::getUserList()) ?>
+    <?= $form->field($model, 'recipe_id')->dropDownList(Recipe::getRecipeList()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
