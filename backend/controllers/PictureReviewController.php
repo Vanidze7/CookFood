@@ -2,35 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use common\models\PictureReview;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PictureReviewController implements the CRUD actions for PictureReview model.
  */
-class PictureReviewController extends Controller
+class PictureReviewController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
     /**
      * Lists all PictureReview models.
      *

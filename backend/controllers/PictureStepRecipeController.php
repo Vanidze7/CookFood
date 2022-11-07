@@ -2,35 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use common\models\PictureStepRecipe;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PictureStepRecipeController implements the CRUD actions for PictureStepRecipe model.
  */
-class PictureStepRecipeController extends Controller
+class PictureStepRecipeController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
     /**
      * Lists all PictureStepRecipe models.
      *

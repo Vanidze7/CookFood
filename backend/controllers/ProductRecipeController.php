@@ -2,35 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use common\models\ProductRecipe;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ProductRecipeController implements the CRUD actions for ProductRecipe model.
  */
-class ProductRecipeController extends Controller
+class ProductRecipeController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
     /**
      * Lists all ProductRecipe models.
      *

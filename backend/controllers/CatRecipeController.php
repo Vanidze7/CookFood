@@ -2,35 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use common\models\CatRecipe;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * CatRecipeController implements the CRUD actions for CatRecipe model.
  */
-class CatRecipeController extends Controller
+class CatRecipeController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
     /**
      * Lists all CatRecipe models.
      *
