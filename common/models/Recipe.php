@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "recipe".
@@ -12,7 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $title
  * @property string|null $content
- * @property string|null $img
+ * @property string|null $path_img
  * @property int|null $count_portions
  * @property int $time_cook
  * @property int|null $views
@@ -35,6 +36,7 @@ use yii\helpers\ArrayHelper;
 class Recipe extends \yii\db\ActiveRecord
 {
     public $file;
+    private $imagePath;
 
     const STATUS_0 = 0;    const STATUS_1 = 1;    const STATUS_2 = 2;
     const LEVEL_0 = 0;    const LEVEL_1 = 1;    const LEVEL_2 = 2;
@@ -71,7 +73,7 @@ class Recipe extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'time_cook', 'cat_recipe_id', 'user_id'], 'required'],
-            [['content', 'img'], 'string'],
+            [['content', 'path_img'], 'string'],
             [['file'], 'image'],
             [['count_portions', 'time_cook', 'views', 'level', 'rating', 'status', 'created_at', 'updated_at', 'cat_recipe_id', 'user_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
@@ -89,7 +91,7 @@ class Recipe extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
             'content' => 'Содержание',
-            'img' => 'Местоположение',
+            'path_img' => 'Местоположение',
             'file' => 'Картинка',
             'count_portions' => 'Кол-во порций (шт.)',
             'time_cook' => 'Время готовки (мин.)',
@@ -180,6 +182,35 @@ class Recipe extends \yii\db\ActiveRecord
         return ArrayHelper::map($arrays, 'id', function ($row){
            return $row['id'] . ' - ' . $row['title'];
         });
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($file = UploadedFile::getInstance($this, 'file'))
+        {
+            $this->imagePath = '/image/recipe/ID - ' . $this->id . '/';
+            $file_name = date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
+            $this->path_img = $this->imagePath . $file_name;
+        }
+        return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($file = UploadedFile::getInstance($this, 'file'))
+        {
+            $front_path = Yii::getAlias('@frontend') . '/web';
+            $dir = $front_path . $this->imagePath;
+            if (!file_exists($dir))
+                mkdir($dir, 0777, true);
+
+            $file->saveAs($front_path . $this->path_img);
+
+            if ($insert == false)
+                unlink($front_path .$changedAttributes['path_img']);
+        }
     }
 
 }

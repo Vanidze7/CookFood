@@ -4,6 +4,7 @@ use common\models\CatRecipe;
 use common\models\Recipe;
 use common\models\User;
 use kartik\editors\Summernote;
+use kartik\file\FileInput;
 use kartik\number\NumberControl;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -19,6 +20,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'content')->widget(Summernote::class, [
             'options' => ['placeholder' => 'Описание рецепта']
+    ]) ?>
+    <?= $form->field($model, 'file')->widget(FileInput::class, [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' =>[
+                'showCaption' => false,
+                'showUpload' => false
+            ]
     ]) ?>
     <?= $form->field($model, 'count_portions')->widget(NumberControl::class, [
             'maskedInputOptions' => [

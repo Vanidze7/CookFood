@@ -1,6 +1,7 @@
 <?php
 
 use common\models\StepRecipe;
+use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -13,7 +14,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'path')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'file')->widget(FileInput::class, [
+        'options' => ['accept' => 'image/*'],
+        'pluginOptions' =>[
+            'showCaption' => false,
+            'showUpload' => false
+        ]
+    ]) ?>
 
     <?= $form->field($model, 'step_id')->dropDownList(StepRecipe::getStepList()) ?>
 

@@ -12,7 +12,7 @@ class m221024_132410_update_recipe_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{recipe}}', 'img', $this->string());
+        $this->addColumn('{{recipe}}', 'path_img', $this->string());
     }
 
     /**

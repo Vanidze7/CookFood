@@ -16,7 +16,7 @@ class m221024_083421_create_recipe_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull(),
             'content' => $this->text(),
-            'img' => $this->string(),
+            'path_img' => $this->string(),
             'count_portions' => $this->tinyInteger(),
             'time_cook' => $this->integer()->notNull(),
             'views' => $this->integer()->unsigned()->defaultValue(0),

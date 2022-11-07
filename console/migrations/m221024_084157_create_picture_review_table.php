@@ -14,7 +14,7 @@ class m221024_084157_create_picture_review_table extends Migration
     {
         $this->createTable('{{%picture_review}}', [
             'id' => $this->primaryKey(),
-            'path' => $this->string()->notNull(),
+            'path_img' => $this->string()->notNull(),
             'review_id' => $this->integer()->notNull(),
         ]);
     }

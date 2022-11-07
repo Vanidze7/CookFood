@@ -14,7 +14,7 @@ class m221024_085423_create_picture_step_recipe_table extends Migration
     {
         $this->createTable('{{%picture_step_recipe}}', [
             'id' => $this->primaryKey(),
-            'path' => $this->string()->notNull(),
+            'path_img' => $this->string()->notNull(),
             'step_id' => $this->integer()->notNull(),
         ]);
     }
