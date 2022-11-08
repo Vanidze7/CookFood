@@ -1,6 +1,10 @@
 <?php
 
+use common\models\Recipe;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -35,4 +39,39 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+</div>
+
+<div class="cat-recipe">
+
+    <h2><?= Html::encode('Рецепты категории') ?></h2>
+
+    <?= GridView::widget([
+        'dataProvider' => $recipeDataProvider,
+        'columns' => [
+            'id',
+            'title',
+            'content:raw',
+            'views',
+            [
+                'attribute' => 'status',
+                'value' => function(Recipe $model){
+                    return Recipe::$statusLabels[$model->status];
+                },
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => function(Recipe $model){
+                    return '<a href="' . Url::to(['user/view', 'id' => $model->user->id]) . '">' . $model->user->id . ' - ' . $model->user->username . '</a>';
+                },
+                'format' => 'raw'
+            ],
+            [
+                'class' => ActionColumn::class,
+                'urlCreator' => function ($action, Recipe $model, $key, $index, $column) {
+                    return Url::toRoute(['recipe/' .$action, 'id' => $model->id]);
+                }
+            ],
+        ],
+    ]); ?>
 </div>

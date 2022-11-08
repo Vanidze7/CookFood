@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'user_id',
                 'value' => function(ReviewRecipe $model){
-                    return $model->user->id . ' - ' . $model->user->username;
+                    return '<a href="' . Url::to(['user/view', 'id' => $model->user->id]) . '">' . $model->user->id . ' - ' . $model->user->username . '</a>';
                 },
                 'format' => 'raw'
             ],

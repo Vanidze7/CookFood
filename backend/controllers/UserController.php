@@ -3,25 +3,27 @@
 namespace backend\controllers;
 
 use backend\components\BaseController;
-use common\models\CatRecipe;
+use common\models\CommentRecipe;
 use common\models\Recipe;
+use common\models\ReviewRecipe;
+use common\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 /**
- * CatRecipeController implements the CRUD actions for CatRecipe model.
+ * UserController implements the CRUD actions for User model.
  */
-class CatRecipeController extends BaseController
+class UserController extends BaseController
 {
     /**
-     * Lists all CatRecipe models.
+     * Lists all User models.
      *
      * @return string
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => CatRecipe::find(),
+            'query' => User::find(),
             /*
             'pagination' => [
                 'pageSize' => 50
@@ -40,29 +42,33 @@ class CatRecipeController extends BaseController
     }
 
     /**
-     * Displays a single CatRecipe model.
-     * @param int $id ID
+     * Displays a single User model.
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $recipeDataProvider = new ActiveDataProvider(['query' => Recipe::find()->where(['cat_recipe_id' => $id])->orderBy('created_at')]);
+        $recipeDataProvider = new ActiveDataProvider(['query' => Recipe::find()->where(['user_id' => $id])->orderBy('created_at')]);
+        $commentDataProvider = new ActiveDataProvider(['query' => CommentRecipe::find()->where(['user_id' => $id])->orderBy('created_at')]);
+        $reviewDataProvider = new ActiveDataProvider(['query' => ReviewRecipe::find()->where(['user_id' => $id])->orderBy('created_at')]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'recipeDataProvider' => $recipeDataProvider,
+            'commentDataProvider' => $commentDataProvider,
+            'reviewDataProvider' => $reviewDataProvider,
         ]);
     }
 
     /**
-     * Creates a new CatRecipe model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new CatRecipe();
+        $model = new User();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -78,9 +84,9 @@ class CatRecipeController extends BaseController
     }
 
     /**
-     * Updates an existing CatRecipe model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
+     * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -98,9 +104,9 @@ class CatRecipeController extends BaseController
     }
 
     /**
-     * Deletes an existing CatRecipe model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -112,15 +118,15 @@ class CatRecipeController extends BaseController
     }
 
     /**
-     * Finds the CatRecipe model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return CatRecipe the loaded model
+     * @param int $id
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CatRecipe::findOne(['id' => $id])) !== null) {
+        if (($model = User::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

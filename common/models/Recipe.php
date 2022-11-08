@@ -91,7 +91,7 @@ class Recipe extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
             'content' => 'Содержание',
-            'path_img' => 'Местоположение',
+            'path_img' => 'Путь к картинке',
             'file' => 'Картинка',
             'count_portions' => 'Кол-во порций (шт.)',
             'time_cook' => 'Время готовки (мин.)',

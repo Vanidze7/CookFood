@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'user_id',
-                'value' => $model->user->id . ' - ' . $model->user->username,
+                'value' => '<a href="' . Url::to(['user/view', 'id' => $model->user->id]) . '">' . $model->user->id . ' - ' . $model->user->username . '</a>',
                 'format' => 'raw'
             ],
         ],

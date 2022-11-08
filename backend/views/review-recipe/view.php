@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
             [
                 'attribute' => 'user_id',
-                'value' => $model->user->id . ' - ' . $model->user->username,
+                'value' => '<a href="' . Url::to(['user/view', 'id' => $model->user->id]) . '">' . $model->user->id . ' - ' . $model->user->username . '</a>',
                 'format' => 'raw'
             ],
             [

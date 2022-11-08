@@ -64,6 +64,8 @@ AppAsset::register($this);
                     ['label' => 'Картинки отзывов', 'url' => ['/picture-review/index']],
             ]
         ];
+        $menuItems [] = ['label' => 'Пользователи', 'url' => '/user/index'];
+
         $menuItems [] = Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
             . Html::submitButton(
                 'Выйти (' . Yii::$app->user->identity->username . ')',

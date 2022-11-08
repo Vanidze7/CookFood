@@ -2,12 +2,14 @@
 
 namespace common\models;
 
+use kartik\file\FileInput;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * User model
@@ -18,18 +20,37 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
+ * @property string $content
  * @property string $auth_key
  * @property integer $status
+ * @property integer $role
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $avatar_img
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $file;
+    private $imagePath;
+
+    const ROLE_ADMIN = 2;
+    const ROLE_USER = 1;
+
+    public static array $roleLabels = [
+        self::ROLE_USER => 'Пользователь',
+        self::ROLE_ADMIN => 'Админ',
+    ];
+
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public static array $statusLabels = [
+        self::STATUS_DELETED => 'Удален',
+        self::STATUS_INACTIVE => 'Неактивирован',
+        self::STATUS_ACTIVE => 'Активирован',
+    ];
 
     /**
      * {@inheritdoc}
@@ -57,6 +78,27 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['email'], 'email'],
+            [['file'], 'image'],
+            [['username'], 'required'],
+            [['role'], 'integer'],
+            [['content', 'avatar_img'], 'string'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Имя пользователя',
+            'email' => 'Почтовый адрес',
+            'status' => 'Статус',
+            'created_at' => 'Создан',
+            'updated_at' => 'Обновлен',
+            'avatar_img' => 'Путь к картинке',
+            'file' => 'Картинка',
+            'content' => 'О себе',
+            'role' => 'Роль',
         ];
     }
 
@@ -219,4 +261,33 @@ class User extends ActiveRecord implements IdentityInterface
         });
     }
 
+    public function beforeSave($insert)
+    {
+        if ($file = UploadedFile::getInstance($this, 'file'))
+        {
+            $this->imagePath = '/image/user/';
+            $file_name = 'ID - ' . $this->id . '_' . date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
+            $this->avatar_img = $this->imagePath . $file_name;
+        }
+        return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($file = UploadedFile::getInstance($this, 'file'))
+        {
+            $front_path = Yii::getAlias('@frontend/web');
+            $dir = $front_path . $this->imagePath;
+
+            if (!file_exists($dir))
+                mkdir($dir, 0777, true);
+
+            $file->saveAs($front_path . $this->avatar_img);
+
+            if (isset($changedAttributes['avatar_img']))
+                unlink($front_path . $changedAttributes['avatar_img']);
+        }
+    }
 }

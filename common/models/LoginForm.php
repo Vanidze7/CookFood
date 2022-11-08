@@ -47,6 +47,8 @@ class LoginForm extends Model
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
+        if ($this->getUser()->role == User::ROLE_USER)
+            $this->addError($attribute, 'Ты пользователь, куда ты лезишь');
     }
 
     /**

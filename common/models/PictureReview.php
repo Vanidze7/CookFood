@@ -48,7 +48,7 @@ class PictureReview extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'path_img' => 'Местоположение',
+            'path_img' => 'Путь к картинке',
             'file' => 'Картинка',
             'review_id' => 'Отзыв',
         ];

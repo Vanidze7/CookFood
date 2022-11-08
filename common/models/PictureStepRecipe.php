@@ -47,7 +47,7 @@ class PictureStepRecipe extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'path_img' => 'Местоположение',
+            'path_img' => 'Путь к картинке',
             'file' => 'Картинка',
             'step_id' => 'ID Шага',
         ];
