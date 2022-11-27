@@ -36,9 +36,21 @@ class StepRecipe extends \yii\db\ActiveRecord
             [['step_number', 'recipe_id'], 'integer'],
             [['content'], 'string'],
             [['recipe_id'], 'exist', 'skipOnError' => true, 'targetClass' => Recipe::class, 'targetAttribute' => ['recipe_id' => 'id']],
+            ['step_number', 'validateStep']
         ];
     }
 
+    public function validateStep($attribute, $params)
+    {
+        //$step_query = StepRecipe::find()->select('step_number')->where(['recipe_id' => $model->recipe_id, 'step_number' => $model->step_number])->all(); // все
+        //$step_query = StepRecipe::find()->select('step_number')->where(['recipe_id' => $model->recipe_id, 'step_number' => $model->step_number])->one(); // один
+        //$step_query = StepRecipe::find()->select('step_number')->where(['recipe_id' => $model->recipe_id, 'step_number' => $model->step_number])->exists(); // есть ли записи вообще
+        //$step_query = StepRecipe::find()->select('step_number')->where(['recipe_id' => $model->recipe_id, 'step_number' => $model->step_number])->count(); // количество записей
+        //$step_query = StepRecipe::find()->select('step_number')->where(['recipe_id' => $model->recipe_id, 'step_number' => $model->step_number])->max('step_number'); // integer значение
+
+        if (StepRecipe::find()->select('step_number')->where(['recipe_id' => $this->recipe_id, 'step_number' => $this->step_number])->exists())
+            $this->addError($attribute, 'Такой шаг уже существует');
+    }
     /**
      * {@inheritdoc}
      */
@@ -79,4 +91,16 @@ class StepRecipe extends \yii\db\ActiveRecord
         });
     }
 
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord){
+            $find_step = StepRecipe::find()->select('step_number')->where(['recipe_id' => $this->recipe_id])->max('step_number');
+            if ($find_step == null){
+                $this->step_number = 1;
+            } else {
+                $this->step_number = $find_step +1;
+            }
+        }
+        return parent::beforeValidate();
+    }
 }

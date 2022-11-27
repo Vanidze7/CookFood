@@ -13,8 +13,9 @@ use yii\widgets\ActiveForm;
 <div class="step-recipe-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'step_number')->textInput() //отредактировать проставление номера шага автоматически ?>
+    <?php if (!$model->isNewRecord)
+        echo $form->field($model, 'step_number')->textInput()
+    ?>
 
     <?= $form->field($model, 'content')->widget(Summernote::class, [
         'options' => ['placeholder' => 'Опишите шаг...']
