@@ -8,6 +8,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
 
@@ -266,7 +267,7 @@ class User extends ActiveRecord implements IdentityInterface
         if ($file = UploadedFile::getInstance($this, 'file'))
         {
             $this->imagePath = '/image/user/';
-            $file_name = 'ID - ' . $this->id . '_' . date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
+            $file_name = date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
             $this->avatar_img = $this->imagePath . $file_name;
         }
         return parent::beforeSave($insert);
@@ -287,7 +288,7 @@ class User extends ActiveRecord implements IdentityInterface
             $file->saveAs($front_path . $this->avatar_img);
 
             if (isset($changedAttributes['avatar_img']))
-                unlink($front_path . $changedAttributes['avatar_img']);
+                FileHelper::unlink(Yii::getAlias($front_path . $changedAttributes['avatar_img']));
         }
     }
 }

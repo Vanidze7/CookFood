@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rating')->textInput() //как замутить систему рейтинга ?>
 
-    <?= $form->field($model, 'status')->dropDownList([Recipe::$statusLabels]) ?>
+    <?= $form->field($model, 'status')->dropDownList(Recipe::$statusLabels) ?>
 
     <?= $form->field($model, 'cat_recipe_id')->dropDownList(CatRecipe::getCategoryList()) ?>
 

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
 /**
@@ -66,7 +67,7 @@ class PictureStepRecipe extends \yii\db\ActiveRecord
     {
         if ($file = UploadedFile::getInstance($this, 'file'))
         {
-            $this->imagePath = '/image/recipe/ID - ' . $this->step->recipe->id . '/steps/';
+            $this->imagePath = '/image/recipe/steps/';
             $file_name = date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
             $this->path_img = $this->imagePath . $file_name;
         }
@@ -87,7 +88,7 @@ class PictureStepRecipe extends \yii\db\ActiveRecord
             $file->saveAs($front_path . $this->path_img);
 
             if ($insert == false)
-                unlink($front_path . $changedAttributes['path_img']);
+                FileHelper::unlink(Yii::getAlias($front_path . $changedAttributes['path_img']));
         }
 
     }

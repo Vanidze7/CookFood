@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
 /**
@@ -68,7 +69,7 @@ class PictureReview extends \yii\db\ActiveRecord
     {
         if ($file = UploadedFile::getInstance($this, 'file'))
         {
-            $this->imagePath = '/image/review/ID - ' . $this->id . '/';
+            $this->imagePath = '/image/review/';
             $file_name = date("Y-m-d") . '_' . Yii::$app->security->generateRandomString() . '.' . $file->extension;
             $this->path_img = $this->imagePath . $file_name;
         }
@@ -89,7 +90,7 @@ class PictureReview extends \yii\db\ActiveRecord
             $file->saveAs($front_path . $this->path_img);
 
             if ($insert == false)
-                unlink($front_path . $changedAttributes['path_img']);
+                FileHelper::unlink(Yii::getAlias($front_path . $changedAttributes['path_img']));
         }
     }
 }
