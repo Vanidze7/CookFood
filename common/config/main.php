@@ -9,5 +9,8 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'thumbnailer' => [
+            'class' => 'daxslab\thumbnailer\Thumbnailer',
+        ],
     ],
 ];
